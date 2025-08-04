@@ -1,0 +1,31 @@
+FROM public.ecr.aws/docker/library/node:22-slim
+
+# Upgrade do npm para versão mais recente
+RUN npm install -g npm@11 --loglevel=error
+
+# Instalando curl para health checks
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
+# Definindo diretório de trabalho
+WORKDIR /usr/src/app
+
+# Copiar package.json da raiz primeiro para cache de dependências
+COPY package*.json ./
+RUN npm install --loglevel=error
+
+# Copiar package.json do client e instalar dependências
+COPY client/package*.json ./client/
+RUN cd client && npm install --loglevel=error
+
+# Copiar todos os arquivos do projeto
+COPY . .
+
+# Build do frontend React com Vite
+# Definindo VITE_API_URL para produção
+RUN cd client && VITE_API_URL=/api npm run build
+
+# Expor porta 8080 (padrão do container)
+EXPOSE 8080
+
+# Comando para iniciar a aplicação
+CMD [ "npm", "start" ]

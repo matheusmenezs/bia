@@ -7,9 +7,9 @@
 set -e
 
 # Configurações padrão baseadas nas regras de infraestrutura
-DEFAULT_CLUSTER="cluster-bia"
-DEFAULT_SERVICE="service-bia"
-DEFAULT_TASK_FAMILY="task-def-bia"
+DEFAULT_CLUSTER="cluster-bia-alb"
+DEFAULT_SERVICE="service-bia-alb-teste"
+DEFAULT_TASK_FAMILY="task-def-bia-alb"
 DEFAULT_REGION="us-east-1"
 DEFAULT_ECR_REPO="bia"
 
